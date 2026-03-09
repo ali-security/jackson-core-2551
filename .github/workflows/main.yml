@@ -3,19 +3,21 @@ on:
   push:
     branches:
     - master
-    - "3.0"
-    - "2.18"
+    - '3.0'
+    - '2.18'
+    - main
     paths-ignore:
-    - "README.md"
-    - "release-notes/*"
+    - README.md
+    - release-notes/*
   pull_request:
     branches:
     - master
-    - "3.0"
-    - "2.18"
+    - '3.0'
+    - '2.18'
+    - main
     paths-ignore:
-    - "README.md"
-    - "release-notes/*"
+    - README.md
+    - release-notes/*
 permissions:
   contents: read
 
@@ -26,24 +28,24 @@ jobs:
       fail-fast: false
       matrix:
         java_version: ['8', '11', '17', '21', '22']
-        os: ['ubuntu-22.04']
+        os: [ubuntu-22.04]
         include:
-          - java_version: '8'
-            os: 'ubuntu-22.04'
-            release_build: 'R'
-          - java_version: '8'
-            os: 'windows-latest'
-            is_windows: 'W'
+        - java_version: '8'
+          os: ubuntu-22.04
+          release_build: R
+        - java_version: '8'
+          os: windows-2022
+          is_windows: W
     env:
-      JAVA_OPTS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+      JAVA_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
     steps:
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: Set up JDK
       uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4.2.2
       with:
-        distribution: 'temurin'
+        distribution: temurin
         java-version: ${{ matrix.java_version }}
-        cache: 'maven'
+        cache: maven
         server-id: sonatype-nexus-snapshots
         server-username: CI_DEPLOY_USERNAME
         server-password: CI_DEPLOY_PASSWORD
@@ -95,4 +97,3 @@ jobs:
     uses: ./.github/workflows/trigger_dep_builds_v3.yml
     secrets:
       token: ${{ secrets.REPO_DISPATCH }}
-      
