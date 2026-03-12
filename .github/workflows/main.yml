@@ -84,7 +84,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.java_version == '8'
       with:
-          name: "jars"
+          name: "jars-${{ matrix.os }}"
           path: "**/*.jar"
   trigger-dep-builds-v2:
     name: Trigger downstream builds for v2
